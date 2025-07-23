@@ -3,16 +3,21 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:notes_frontend/main.dart';
 
 void main() {
-  testWidgets('App generation message displayed', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  // Create a minimal backend URL for the widget
+  const backendUrl = 'http://localhost:3000';
 
-    expect(find.text('notes_frontend App is being generated...'), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+  testWidgets('Notes App loads NotesHomePage', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyNotesApp(backendUrl: backendUrl));
+
+    expect(find.text('Notes'), findsOneWidget);
+    expect(find.byType(Scaffold), findsOneWidget);
+    expect(find.byType(FloatingActionButton), findsOneWidget);
   });
 
-  testWidgets('App bar has correct title', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+  testWidgets('FAB exists to add note', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyNotesApp(backendUrl: backendUrl));
 
-    expect(find.text('notes_frontend'), findsOneWidget);
+    expect(find.byIcon(Icons.add), findsOneWidget);
   });
 }
+
